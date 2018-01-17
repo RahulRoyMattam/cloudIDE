@@ -1,0 +1,293 @@
+doctype html
+html
+  title Code Editor
+  meta(charset='utf-8')
+  // <link rel="stylesheet" href="show-hint.css">
+  link(rel='stylesheet', href='codemirror/codemirror.css')
+  link(rel='stylesheet', href='codemirror_addons/foldgutter.css')
+  link(rel='stylesheet', href='codemirror_addons/show-hint.css')
+  script(src='codemirror/codemirror.js')
+  script(src='codemirror_addons/matchbrackets.js')
+  script(src='codemirror_addons/closebrackets.js')
+  script(src='codemirror_addons/foldcode.js')
+  script(src='codemirror_addons/foldgutter.js')
+  script(src='codemirror_addons/brace-fold.js')
+  script(src='codemirror_addons/comment-fold.js')
+  script(src='codemirror_addons/match-highlighter.js')
+  script(src='js/tern.js')
+  script(src='codemirror_addons/active-line.js')
+  script.
+    var tern=new TernaryTree();
+  script(src='codemirror_addons/show-hint.js')
+  script(src='codemirror_addons/anyword-hint.js')
+  script(src='codemirror/clike.js')
+  link(rel='stylesheet', type='text/css', href='css/normalize.css')
+  link(rel='stylesheet', type='text/css', href='css/demo2.css')
+  link(rel='stylesheet', type='text/css', href='css/component.css')
+  link(rel='stylesheet', type='text/css', href='css/component1.css')
+  link(rel='stylesheet', type='text/css', href='css/content.css')
+  link(rel='stylesheet', type='text/css', href='theme/3024-day.css')
+  link(rel='stylesheet', type='text/css', href='theme/3024-night.css')
+  link(rel='stylesheet', type='text/css', href='theme/ambiance.css')
+  link(rel='stylesheet', href='theme/base16-dark.css')
+  link(rel='stylesheet', href='theme/base16-light.css')
+  link(rel='stylesheet', href='theme/blackboard.css')
+  link(rel='stylesheet', href='theme/cobalt.css')
+  link(rel='stylesheet', href='theme/eclipse.css')
+  link(rel='stylesheet', href='theme/elegant.css')
+  link(rel='stylesheet', href='theme/erlang-dark.css')
+  link(rel='stylesheet', href='theme/lesser-dark.css')
+  link(rel='stylesheet', href='theme/mbo.css')
+  link(rel='stylesheet', href='theme/mdn-like.css')
+  link(rel='stylesheet', href='theme/midnight.css')
+  link(rel='stylesheet', href='theme/monokai.css')
+  link(rel='stylesheet', href='theme/neat.css')
+  link(rel='stylesheet', href='theme/neo.css')
+  link(rel='stylesheet', href='theme/night.css')
+  link(rel='stylesheet', href='theme/paraiso-dark.css')
+  link(rel='stylesheet', href='theme/paraiso-light.css')
+  link(rel='stylesheet', href='theme/pastel-on-dark.css')
+  link(rel='stylesheet', href='theme/rubyblue.css')
+  link(rel='stylesheet', href='theme/solarized.css')
+  link(rel='stylesheet', href='theme/the-matrix.css')
+  link(rel='stylesheet', href='theme/tomorrow-night-bright.css')
+  link(rel='stylesheet', href='theme/tomorrow-night-eighties.css')
+  link(rel='stylesheet', href='theme/twilight.css')
+  link(rel='stylesheet', href='theme/vibrant-ink.css')
+  link(rel='stylesheet', href='theme/xq-dark.css')
+  link(rel='stylesheet', href='theme/xq-light.css')
+  link(rel='stylesheet', href='theme/zenburn.css')
+  link(rel='stylesheet', type='text/css', href='css1/normalize.css')
+  link(rel='stylesheet', type='text/css', href='css1/demo.css')
+  link(rel='stylesheet', type='text/css', href='css1/dialog.css')
+  link(rel='stylesheet', type='text/css', href='css1/dialog-sally.css')
+  // <link href="css1/base.css" rel="stylesheet">
+  link(rel='stylesheet', type='text/css', href='css/cloud.css')
+  // <link rel="stylesheet" type="text/css" href="css/demo3.css" />
+  script(src='js/modernizr.custom.js')
+  style.
+    #demotext,.CodeMirror
+    {
+    display: inline-block;
+    margin-left:1%;
+    margin-right:2%;
+    width:44%;
+    height:500px;
+    }
+    #output
+    {
+    display:inline-block;
+    /*margin-left:1%;*/
+    margin-right:2%;
+    width:42%;
+    height:500px;
+    float:right;
+    }
+    .submit
+    {
+    width:6%;
+    margin-left:47%;
+    margin-right: 47%;
+    margin-top: -10%;
+    }
+    .content {
+    font: 70px  'Open Sans', Impact;
+    text-align: center;
+    z-index: 100000; }
+    .btn {
+    width:100%;
+    display:inline-block; block;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 22px;
+    text-align: center;
+    transition: .3s;
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -o-transition: .3s;
+    }
+    .green {
+    margin-top: 250px;
+    margin-left: -20%;
+    color: #006600;
+    border: 2px #006600 solid;
+    text-align: center;
+    }
+    .green:hover {
+    color: #fff;
+    background-color: #006600;
+    }
+    .buttons {
+    margin-top: 20px;
+    display: inline-block;
+    }
+  // <script src="js/jquery.min.js"></script>
+  #container.container
+    // Top Navigation
+    nav#cbp-hrmenu.cbp-hrmenu(style='z-index:10;')
+      ul
+        li
+          a(href='#') File
+          .cbp-hrsub(style='z-index:10000;')
+            .cbp-hrsub-inner
+              div
+                h4 Options
+                ul
+                  li
+                    a#files(href='#')
+                      span.trigger(data-dialog='somedialog') Files
+                  li
+                    a#save(href='#') Save
+                  li
+                    a#behaviour(href='#') BehaviourSearch
+                  li
+                    a#exit(href='#') Exit
+            // /cbp-hrsub-inner
+          // /cbp-hrsub
+        li
+          a(href='#') Edit
+          .cbp-hrsub(style='z-index:10000;')
+            .cbp-hrsub-inner
+              div
+                h4 Ready to Style
+                ul
+                  li
+                    | Select a Theme
+                    select#select.cs-select.cs-skin-elastic(onchange='selectTheme()')
+                      option(selected='') night
+                      option 3024-day
+                      option 3024-night
+                      option ambiance
+                      option base16-dark
+                      option base16-light
+                      option blackboard
+                      option cobalt
+                      option eclipse
+                      option elegant
+                      option erlang-dark
+                      option lesser-dark
+                      option mbo
+                      option mdn-like
+                      option midnight
+                      option monokai
+                      option neat
+                      option neo
+                      option default
+                      option paraiso-dark
+                      option paraiso-light
+                      option pastel-on-dark
+                      option rubyblue
+                      option solarized dark
+                      option solarized light
+                      option the-matrix
+                      option tomorrow-night-bright
+                      option tomorrow-night-eighties
+                      option twilight
+                      option vibrant-ink
+                      option xq-dark
+                      option xq-light
+                      option zenburn
+                  //
+                    <li><a href="#">Math Genius</a></li>
+                    <li><a href="#">Chemokid</a></li>
+            // /cbp-hrsub-inner
+          // /cbp-hrsub
+    .frame
+      .plane-container
+        svg.plane(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', x='0px', y='0px', width='1131.53px', height='379.304px', viewbox='0 0 1131.53 379.304', enable-background='new 0 0 1131.53 379.304', xml:space='preserve')
+          polygon(fill='#D8D8D8', points='72.008,0 274.113,140.173 274.113,301.804 390.796,221.102 601.682,367.302 1131.53,0.223  ')
+            polygon(fill='#C4C4C3', points='1131.53,0.223 274.113,140.173 274.113,301.804 390.796,221.102   ')
+    .clouds
+      svg.cloud.big.front.slowest(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', x='0px', y='0px', width='762px', height='331px', viewbox='0 0 762 331', enable-background='new 0 0 762 331', xml:space='preserve')
+        path(fill='#FFFFFF', d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106\
+        c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529\
+        C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5\
+        S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z')
+      svg.cloud.distant.smaller(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', x='0px', y='0px', width='762px', height='331px', viewbox='0 0 762 331', enable-background='new 0 0 762 331', xml:space='preserve')
+        path(fill='#FFFFFF', d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106\
+        c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529\
+        C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5\
+        S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z')
+      svg.cloud.small.slow(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', x='0px', y='0px', width='762px', height='331px', viewbox='0 0 762 331', enable-background='new 0 0 762 331', xml:space='preserve')
+        path(fill='#FFFFFF', d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106\
+        c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529\
+        C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5\
+        S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z')
+      svg.cloud.distant.super-slow.massive(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', x='0px', y='0px', width='762px', height='331px', viewbox='0 0 762 331', enable-background='new 0 0 762 331', xml:space='preserve')
+        path(fill='#FFFFFF', d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106\
+        c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529\
+        C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5\
+        S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z')
+      svg.cloud.slower(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', x='0px', y='0px', width='762px', height='331px', viewbox='0 0 762 331', enable-background='new 0 0 762 331', xml:space='preserve')
+        path(fill='#FFFFFF', d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106\
+        c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529\
+        C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5\
+        S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z')
+    article
+      section#demo1
+        section(style='margin-top:-3%;')
+          #code_text(style="font: 25px 'Open Sans', Impact; float:left; display:inline-block; ")
+            font(color='black') INPUT CODE
+          #output_text(style="font: 25px 'Open Sans', Impact; float:left; display:inline-block; margin-left:49%; ")
+            font(color='black') OUTPUT
+        textarea#demotext
+          | /*
+          | * Demonstration of code editor
+          | */
+          | #include<stdio.h>
+          | int main()
+          | {
+          | printf("hello world");
+          | return 0;
+          | }
+        div(style='display:inline-block;')
+          button#submit.btn.green Submit!
+        textarea#output
+        input#inp.inp(type='file', value='Input')
+    script(src='js/jquery.min.js')
+    script(src='js/classie.js')
+    script(src='js/dialogFx.js')
+  // /container
+  #somedialog.dialog(style='z-index:10000;')
+    .dialog__overlay
+    .dialog__content
+      h2 DIRECTORY CONTENTS
+      ul#direc
+      div
+        button.action(data-dialog-close='', style='display:none;')
+  #savedialog.dialog(style='z-index:10000;')
+    .dialog__overlay
+    .dialog__content
+      h2(style='padding-bottom:0.4em;') Enter Filename
+      input#fname(style='margin-bottom:2em;', type='text')
+      div
+        button#no.action(style='padding:1em 2em;float:right;') Cancel
+      div
+        button#yes.action(style='padding:1em 2em;float:left;') Yes
+  script.
+    (function() {
+    var dlgtrigger = document.querySelector( '[data-dialog]' ),
+    somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) ),
+    dlg = new DialogFx( somedialog );
+    dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
+    })();
+  script(type='text/javascript').
+    var lis=document.getElementById('direc')
+    .getElementsByTagName('li');
+    for(i=0;i<lis.length;i++) {
+    lis[i].onclick=myFunction;
+    }
+    function myFunction()
+    {
+    console.log("HEY");
+    alert(this.innerHTML+' has been clicked !');
+    }
+  // morph-button
+  script(src='js/cbpHorizontalMenu.min.js')
+  script.
+    $(function() {
+    cbpHorizontalMenu.init();
+    });
+  script(src='js/client.js')

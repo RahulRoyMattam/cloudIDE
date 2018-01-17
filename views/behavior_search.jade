@@ -1,0 +1,85 @@
+html(lang='en')
+  html(lang='en')
+    head
+      meta(charset='UTF-8')
+      meta(name='viewport', content='width=320, initial-scale=1, user-scalable=1')
+      link(rel='stylesheet', href='css/sand.css', type='text/css')
+      link(rel='stylesheet', type='text/css', href='css/normalize.css')
+      link(rel='stylesheet', type='text/css', href='css/demo.css')
+      // common styles
+      link(rel='stylesheet', type='text/css', href='css/dialog.css')
+      // individual effect
+      link(rel='stylesheet', type='text/css', href='css/dialog-sally.css')
+      script(src='js/modernizr.custom.js')
+    body
+      p.s
+        input#search(name='search', type='search')
+      #sandbox.sandbox.list
+        .gap
+        .gap
+      #somedialog.dialog
+        .dialog__overlay
+        .dialog__content
+          h2 TAG DETAILS
+          | Tag Name:
+          br
+          | Tag Description:
+          br
+          | Code Segment:
+          br
+          | Suggestions:
+          div
+            button.action(data-dialog-close='', style='display:none;')
+      script(src='js/classie.js')
+      script(src='js/jquery.min.js')
+      script.
+        $(document).ready(function(){
+        $("#search").bind('input propertychange', function(){
+        //current mouse position in textarea
+        var str2new=$(this).val();
+        $.ajax({
+        type: "POST",
+        url: '/search',
+        data: "search_val="+encodeURIComponent(JSON.stringify(str2new)),
+        success: function(data, status){
+        var i=0;
+        var obj=JSON.parse(data);
+        $("#sandbox").html("");
+        while(obj[i]!=undefined)
+        {
+        var content=obj[i].value.replace("ide_","");
+        $("#sandbox").append("<button class='mix category-1' style='display:inline-block;'>"+content+"</button>");
+        i++;
+        }
+        $("#sandbox").append("<div class='gap'></div><div class='gap'></div>");
+        },
+        error: function(){
+        alert("There was an error in passing....please excuse us.");
+        }
+        });
+        });
+        $("#sandbox button").live("click",function(){
+        var somedialog=document.getElementById("somedialog");
+        var content=$(this).html();
+        console.log(content);
+        $.ajax({
+        type: "POST",
+        url: "/searchtag",
+        data: "search_val="+content,
+        success: function(data,status){
+        var contents=JSON.parse(data);
+        $(".dialog__content").html("<h2>TAG DETAILS</h2>Tag Name: "+content+"<br><h5>Code Segment: </h5><h5>"+contents[0].code+"</h5><br><h5>Speed: </h5><h5>"+contents[0].speed+"</h5><br><div><button class='action' data-dialog-close style='display:none;'></button></div>");
+        classie.add(somedialog,'dialog--open');
+        },
+        error: function(){
+        alert("There was an error in passing....please excuse us.");
+        }
+        });
+        });
+        $(".dialog__overlay").click(function(){
+        var somedialog=document.getElementById("somedialog");
+        classie.remove(somedialog,'dialog--open');
+        classie.add(somedialog,'dialog--close');
+        setTimeout(function(){classie.remove(somedialog,'dialog--close');},750);
+        });
+        });

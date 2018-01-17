@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<title>Code Editor</title>
+<meta charset="utf-8">
+<!-- <link rel="stylesheet" href="show-hint.css">-->
+<link rel="stylesheet" href="codemirror/codemirror.css">
+<link rel="stylesheet" href="codemirror_addons/foldgutter.css">
+<link rel="stylesheet" href="codemirror_addons/show-hint.css">
+
+<script src="codemirror/codemirror.js"></script>
+<script src="codemirror_addons/matchbrackets.js"></script>
+<script src="codemirror_addons/closebrackets.js"></script>
+<script src="codemirror_addons/foldcode.js"></script>
+<script src="codemirror_addons/foldgutter.js"></script>
+<script src="codemirror_addons/brace-fold.js"></script>
+<script src="codemirror_addons/comment-fold.js"></script>
+<script src="codemirror_addons/match-highlighter.js"></script>
+<script src="js/tern.js"></script>
+<script src="codemirror_addons/active-line.js"></script>
+<script>var tern=new TernaryTree();</script>
+<script src="codemirror_addons/show-hint.js"></script>
+<script src="codemirror_addons/anyword-hint.js"></script>
+<script src="codemirror/clike.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<link rel="stylesheet" type="text/css" href="css/demo2.css">
+<link rel="stylesheet" type="text/css" href="css/component.css">
+<link rel="stylesheet" type="text/css" href="css/component1.css">
+<link rel="stylesheet" type="text/css" href="css/content.css">
+<link rel="stylesheet" type="text/css" href="theme/3024-day.css">
+<link rel="stylesheet" type="text/css" href="theme/3024-night.css">
+<link rel="stylesheet" type="text/css" href="theme/ambiance.css">
+<link rel="stylesheet" href="theme/base16-dark.css">
+<link rel="stylesheet" href="theme/base16-light.css">
+<link rel="stylesheet" href="theme/blackboard.css">
+<link rel="stylesheet" href="theme/cobalt.css">
+<link rel="stylesheet" href="theme/eclipse.css">
+<link rel="stylesheet" href="theme/elegant.css">
+<link rel="stylesheet" href="theme/erlang-dark.css">
+<link rel="stylesheet" href="theme/lesser-dark.css">
+<link rel="stylesheet" href="theme/mbo.css">
+<link rel="stylesheet" href="theme/mdn-like.css">
+<link rel="stylesheet" href="theme/midnight.css">
+<link rel="stylesheet" href="theme/monokai.css">
+<link rel="stylesheet" href="theme/neat.css">
+<link rel="stylesheet" href="theme/neo.css">
+<link rel="stylesheet" href="theme/night.css">
+<link rel="stylesheet" href="theme/paraiso-dark.css">
+<link rel="stylesheet" href="theme/paraiso-light.css">
+<link rel="stylesheet" href="theme/pastel-on-dark.css">
+<link rel="stylesheet" href="theme/rubyblue.css">
+<link rel="stylesheet" href="theme/solarized.css">
+<link rel="stylesheet" href="theme/the-matrix.css">
+<link rel="stylesheet" href="theme/tomorrow-night-bright.css">
+<link rel="stylesheet" href="theme/tomorrow-night-eighties.css">
+<link rel="stylesheet" href="theme/twilight.css">
+<link rel="stylesheet" href="theme/vibrant-ink.css">
+<link rel="stylesheet" href="theme/xq-dark.css">
+<link rel="stylesheet" href="theme/xq-light.css">
+<link rel="stylesheet" href="theme/zenburn.css">
+<link rel="stylesheet" type="text/css" href="css1/normalize.css">
+<link rel="stylesheet" type="text/css" href="css1/demo.css">
+<link rel="stylesheet" type="text/css" href="css1/dialog.css">
+<link rel="stylesheet" type="text/css" href="css1/dialog-sally.css">
+<!-- <link href="css1/base.css" rel="stylesheet">-->
+<link rel="stylesheet" type="text/css" href="css/cloud.css">
+<!-- <link rel="stylesheet" type="text/css" href="css/demo3.css" />-->
+
+<script src="js/modernizr.custom.js"></script>
+<style>
+#demotext,.CodeMirror
+{
+display: inline-block;
+margin-left:1%;
+margin-right:2%;
+width:44%;
+height:500px;
+}
+#output
+{
+display:inline-block;
+/*margin-left:1%;*/
+margin-right:2%;
+width:42%;
+height:500px;
+float:right;
+}
+.submit
+{
+width:6%;
+margin-left:47%;
+margin-right: 47%;
+margin-top: -10%;
+}
+.content {
+font: 70px  'Open Sans', Impact;
+text-align: center;
+z-index: 100000; }
+.btn {
+width:100%;
+display:inline-block; block;
+cursor: pointer;
+border-radius: 5px;
+text-decoration: none;
+padding: 10px;
+font-size: 22px;
+text-align: center;
+transition: .3s;
+-webkit-transition: .3s;
+-moz-transition: .3s;
+-o-transition: .3s;
+}
+.green {
+margin-top: 250px;
+margin-left: -20%;
+color: #006600;
+border: 2px #006600 solid;
+text-align: center;
+}
+.green:hover {
+color: #fff;
+background-color: #006600;
+}
+.buttons {
+margin-top: 20px;
+display: inline-block;
+}
+</style>
+<!-- <script src="js/jquery.min.js"></script>-->
+<div id="container" class="container">
+<!-- Top Navigation-->
+<nav id="cbp-hrmenu" style="z-index:10;" class="cbp-hrmenu">
+<ul>
+	<li>
+	<a href="#">File</a>
+		<div style="z-index:10000;" class="cbp-hrsub">
+			<div class="cbp-hrsub-inner">
+				<div><h4>Options</h4>
+				<ul>
+					<li><a id="files" href="#"><span data-dialog="somedialog" class="trigger">Files</span></a></li>
+					<li><a id="save" href="#">Save</a></li>
+					<li><a id="behaviour" href="#">BehaviourSearch</a></li>
+					<li><a id="exit" href="#">Exit</a></li>
+				</ul>
+				</div>
+			</div>
+			<!-- /cbp-hrsub-inner-->
+		</div>
+		<!-- /cbp-hrsub-->
+	</li>
+	<li>
+	<a href="#">Edit</a>
+		<div style="z-index:10000;" class="cbp-hrsub">
+			<div class="cbp-hrsub-inner">
+				<div><h4>Ready to Style</h4>
+					<ul>
+					<li>Select a Theme<select id="select" onchange="selectTheme()" class="cs-select cs-skin-elastic"><option selected="">night</option><option>3024-day</option><option>3024-night</option><option>ambiance</option><option>base16-dark</option><option>base16-light</option><option>blackboard</option><option>cobalt</option><option>eclipse</option><option>elegant</option><option>erlang-dark</option><option>lesser-dark</option><option>mbo</option><option>mdn-like</option><option>midnight</option><option>monokai</option><option>neat</option><option>neo</option><option>default</option><option>paraiso-dark</option><option>paraiso-light</option><option>pastel-on-dark</option><option>rubyblue</option><option>solarized dark</option><option>solarized light</option><option>the-matrix</option><option>tomorrow-night-bright</option><option>tomorrow-night-eighties</option><option>twilight</option><option>vibrant-ink</option><option>xq-dark</option><option>xq-light</option><option>zenburn</option></select></li>
+					<!--<li><a href="#">Math Genius</a></li>
+					<li><a href="#">Chemokid</a></li>-->
+					</ul>
+				</div>
+			</div>
+			<!-- /cbp-hrsub-inner-->
+		</div>
+		<!-- /cbp-hrsub-->
+	</li>
+</ul>
+</nav>
+<div class="frame">
+<div class="plane-container">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1131.53px" height="379.304px" viewbox="0 0 1131.53 379.304" enable-background="new 0 0 1131.53 379.304" xml:space="preserve" class="plane"><polygon fill="#D8D8D8" points="72.008,0 274.113,140.173 274.113,301.804 390.796,221.102 601.682,367.302 1131.53,0.223  "><polygon fill="#C4C4C3" points="1131.53,0.223 274.113,140.173 274.113,301.804 390.796,221.102   "></polygon></polygon></svg>
+</div>
+</div>
+<div class="clouds">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="762px" height="331px" viewbox="0 0 762 331" enable-background="new 0 0 762 331" xml:space="preserve" class="cloud big front slowest"><path fill="#FFFFFF" d="M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106        c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529        C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5        S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z"></path></svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="762px" height="331px" viewbox="0 0 762 331" enable-background="new 0 0 762 331" xml:space="preserve" class="cloud distant smaller"><path fill="#FFFFFF" d="M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106        c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529        C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5        S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z"></path></svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="762px" height="331px" viewbox="0 0 762 331" enable-background="new 0 0 762 331" xml:space="preserve" class="cloud small slow"><path fill="#FFFFFF" d="M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106        c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529        C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5        S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z"></path></svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="762px" height="331px" viewbox="0 0 762 331" enable-background="new 0 0 762 331" xml:space="preserve" class="cloud distant super-slow massive"><path fill="#FFFFFF" d="M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106        c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529        C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5        S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z"></path></svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="762px" height="331px" viewbox="0 0 762 331" enable-background="new 0 0 762 331" xml:space="preserve" class="cloud slower"><path fill="#FFFFFF" d="M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106        c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529        C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5        S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z"></path></svg>
+</div>
+
+<article>
+<section id="demo1">
+<section style="margin-top:-3%;">
+<div id="code_text" style="font: 25px 'Open Sans', Impact; float:left; display:inline-block; ">
+<font color="black">INPUT CODE</font>
+</div>
+<div id="output_text" style="font: 25px 'Open Sans', Impact; float:left; display:inline-block; margin-left:49%; ">
+<font color="black">OUTPUT</font>
+</div>
+</section>
+
+<textarea id="demotext">
+/*
+* Demonstration of code editor
+*/
+#include<stdio.h>
+int main()
+{
+printf("hello world");
+return 0;
+}
+</textarea>
+
+<div style="display:inline-block;"><button id="submit" class="btn green">Submit!</button></div><textarea id="output"></textarea><input id="inp" type="file" value="Input" class="inp"></section></article><script src="js/jquery.min.js"></script><script src="js/classie.js"></script><script src="js/dialogFx.js"></script></div><!-- /container--><div id="somedialog" style="z-index:10000;" class="dialog"><div class="dialog__overlay"></div><div class="dialog__content"><h2>DIRECTORY CONTENTS</h2><ul id="direc"></ul><div><button data-dialog-close="" style="display:none;" class="action"></button></div></div></div><div id="savedialog" style="z-index:10000;" class="dialog"><div class="dialog__overlay"></div><div class="dialog__content"><h2 style="padding-bottom:0.4em;">Enter Filename</h2><input id="fname" style="margin-bottom:2em;" type="text"><div><button id="no" style="padding:1em 2em;float:right;" class="action">Cancel</button></div><div><button id="yes" style="padding:1em 2em;float:left;" class="action">Yes</button></div></div></div><script>(function() {
+var dlgtrigger = document.querySelector( '[data-dialog]' ),
+somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) ),
+dlg = new DialogFx( somedialog );
+dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
+})();</script><script type="text/javascript">var lis=document.getElementById('direc')
+.getElementsByTagName('li');
+for(i=0;i<lis.length;i++) {
+lis[i].onclick=myFunction;
+}
+function myFunction()
+{
+console.log("HEY");
+alert(this.innerHTML+' has been clicked !');
+}</script><!-- morph-button--><script src="js/cbpHorizontalMenu.min.js"></script><script>$(function() {
+cbpHorizontalMenu.init();
+});</script><script src="js/client.js"></script></html>
